@@ -1,21 +1,23 @@
+package game;
+
 import base.KeyEventPress;
-import tklibs.SpriteUtils;
+import base.Setting;
+import game.GameCanvas;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 
 public class GameWindow extends JFrame {
     // khai báo biến ngoài để dùng chung
+    // window là frame
     GameCanvas canvas ;
 
 
 
     public GameWindow(){
         //setup window
-        this.setSize(800,600);
+        this.setSize(Setting.SCREEN_WIDTH,Setting.SCREEN_HEIGHT);
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setupEventListtener();
@@ -41,6 +43,9 @@ public class GameWindow extends JFrame {
                 if (e.getKeyCode() == KeyEvent.VK_A){
                     KeyEventPress.isLeftPress = true;
                 }
+                if (e.getKeyCode() == KeyEvent.VK_SPACE){
+                    KeyEventPress.isSpacePress = true;
+                }
             }
 
             @Override
@@ -57,11 +62,14 @@ public class GameWindow extends JFrame {
                 if (e.getKeyCode() == KeyEvent.VK_A) {
                     KeyEventPress.isLeftPress = false;
                 }
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    KeyEventPress.isSpacePress = false;
+                }
             }
         });
     }
 
-    void gameLoop(){
+    public void gameLoop(){
         long delay = 1000/60;
         long lastTime = 0;
         while (true){
@@ -70,6 +78,7 @@ public class GameWindow extends JFrame {
             if(currentTime - lastTime > delay){
             //logic
             canvas.run();
+//            canvas.shoot();
             this.repaint(); //hàm repain gọi từ pain component
             // mỗi lần chạy xong thì gán t/g hiện tại băng t/g cuối
             lastTime = currentTime;
